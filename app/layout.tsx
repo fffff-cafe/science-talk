@@ -1,8 +1,8 @@
 import "./reset.css"
 
 export const metadata = {
-  title: "Page title",
-  description: "Page description",
+  title: "Science talk",
+  description: "Created by FFFFF cafe members",
 }
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
@@ -23,7 +23,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
               margin: 0,
             }}
           >
-            Page title
+            Science talk
           </h1>
         </header>
         <main
@@ -43,10 +43,11 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
             padding: "1rem",
           }}
         >
-          <p>&copy; My organization</p>
+          <p>&copy; FFFFF Cafe</p>
         </footer>
       </body>
     </html>
   )
 }
+
 export default RootLayout
