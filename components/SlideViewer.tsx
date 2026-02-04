@@ -1,8 +1,6 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import Reveal from "reveal.js"
-import Markdown from "reveal.js/plugin/markdown/markdown"
 
 type SlideViewerProps = {
   content: string
@@ -10,24 +8,33 @@ type SlideViewerProps = {
 
 export const SlideViewer = ({ content }: SlideViewerProps) => {
   const deckRef = useRef<HTMLDivElement>(null)
-  const revealRef = useRef<Reveal.Api | null>(null)
+  const revealRef = useRef<{ destroy: () => void } | null>(null)
 
   useEffect(() => {
     if (!deckRef.current || revealRef.current) return
 
-    const deck = new Reveal(deckRef.current, {
-      plugins: [Markdown],
-      embedded: true,
-      hash: true,
-      slideNumber: true,
-    })
+    const initReveal = async () => {
+      const Reveal = (await import("reveal.js")).default
+      const Markdown = (await import("reveal.js/plugin/markdown/markdown")).default
 
-    deck.initialize()
-    revealRef.current = deck
+      const deck = new Reveal(deckRef.current!, {
+        plugins: [Markdown],
+        embedded: true,
+        hash: true,
+        slideNumber: true,
+      })
+
+      deck.initialize()
+      revealRef.current = deck
+    }
+
+    initReveal()
 
     return () => {
-      deck.destroy()
-      revealRef.current = null
+      if (revealRef.current) {
+        revealRef.current.destroy()
+        revealRef.current = null
+      }
     }
   }, [])
 
